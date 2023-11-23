@@ -5,7 +5,6 @@ from Bio.PDB import Polypeptide
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 def calculate_angles(structure):
     val_phi = []
     val_psi = []
