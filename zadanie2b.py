@@ -8,40 +8,40 @@ import matplotlib.pyplot as plt
 def calculate_angles(structure):
     val_phi = []
     val_psi = []
-    secondary_structure = []
+    secondary = []
 
     for model in structure:
         for chain in model:
-            polypeptide = Polypeptide.Polypeptide(chain)  # obiekt klasy Polypeptide, analiza sekwencji aminokwasów
-            angles = polypeptide.get_phi_psi_list()  # lista katów phi i psi
-            dssp = PDB.DSSP(model, fr)  # obiekt klasy DSSP, analiza struktury wtórnej
+            polypeptide = Polypeptide.Polypeptide(chain)
+            angles = polypeptide.get_phi_psi_list()  # lista katów
+            dssp = PDB.DSSP(model, fr)
 
             residues = list(chain.get_residues())  # lista reszt aminokwasowych
-            for phi, psi in angles:  # iteracja po parach kątów
+            for phi, psi in angles:  # po parach
                 if phi is not None and psi is not None:  # warunek jeśli kąty są zdefiniowane
                     residue_index = polypeptide.get_phi_psi_list().index((phi, psi))  # indeks reszty aminokwasowej w polypeptide
                     residue_id = (chain.id, residues[residue_index].get_id()[1])  # identyfikator reszty aminokwasowej, identyfikator łańcucha i indeks reszty
                     val_phi.append(np.degrees(phi))
                     val_psi.append(np.degrees(psi))  # dodanie katów w stopniach do list
-                    secondary_structure.append(dssp[residue_id][2])  # dodanie informacji o strukturze wtórnej do listy (trzeci element na liscie)
+                    secondary.append(dssp[residue_id][2])  # dodanie informacji o strukturze do listy (trzeci element na liscie)
 
-    return val_phi, val_psi, secondary_structure
+    return val_phi, val_psi, secondary
 
 
 def plot_ramachandran(val_phi, val_psi, secondary_structure):
     plt.figure(figsize=(8, 6))  # stworzenie plot 8x6
 
-    # kolory dla typów struktury wtórnej
-    color_map = {'H': 'red',
+    # kolory dla typów struktury
+    color_map = {'H': 'green',
                  'B': 'orange',
                  'E': 'yellow',
-                 'G': 'green',
+                 'G': 'red',
                  'I': 'blue',
                  'T': 'purple',
                  'S': 'blue',
                  '-': 'grey'}
 
-    # mapowanie kodów struktur wtórnych do ich nazw (legenda)
+    # mapowanie kodów struktur do ich nazw (legenda)
     full_names = {
         'H': 'Alpha helix',
         'B': 'Beta bridge',
